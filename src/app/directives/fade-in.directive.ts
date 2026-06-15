@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
   standalone: true,
 })
 export class FadeInDirective implements OnInit, OnDestroy {
-  @Input() appFadeIn = 0; // delay in ms
+  @Input() appFadeIn: number | string | null = 0;
   private destroy$ = new Subject<void>();
   private animated = false;
 
