@@ -63,16 +63,16 @@ interface HeatmapDay {
           </div>
 
           <!-- Legend -->
-          <div class="mt-6 flex items-center justify-end gap-4">
-            <span class="text-xs text-text-muted">Less</span>
-            <div class="heatmap-legend">
-              <div class="heatmap-legend-cell level-0"></div>
-              <div class="heatmap-legend-cell level-1"></div>
-              <div class="heatmap-legend-cell level-2"></div>
-              <div class="heatmap-legend-cell level-3"></div>
-              <div class="heatmap-legend-cell level-4"></div>
+          <div class="mt-8 flex items-center justify-end gap-3">
+            <span class="text-xs text-text-muted font-semibold">Less</span>
+            <div class="flex gap-2">
+              <div class="heatmap-legend-cell level-0" title="No contribution"></div>
+              <div class="heatmap-legend-cell level-1" title="1-2 contributions"></div>
+              <div class="heatmap-legend-cell level-2" title="3-5 contributions"></div>
+              <div class="heatmap-legend-cell level-3" title="6-8 contributions"></div>
+              <div class="heatmap-legend-cell level-4" title="9+ contributions"></div>
             </div>
-            <span class="text-xs text-text-muted">More</span>
+            <span class="text-xs text-text-muted font-semibold">More</span>
           </div>
         </div>
 
