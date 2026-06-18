@@ -28,7 +28,7 @@ import { takeUntil } from 'rxjs/operators';
     >
       <div
         [ngClass]="{
-          'glass py-3 shadow-lg': scrolled,
+          'glass-strong py-3 shadow-lg': scrolled,
           'py-0': !scrolled,
         }"
         class="mx-auto max-w-6xl px-6 flex items-center justify-between rounded-2xl transition-all duration-300"
@@ -161,6 +161,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { label: 'About', href: '#about' },
     { label: 'Experience', href: '#experience' },
     { label: 'Skills', href: '#skills' },
+    { label: 'GitHub', href: '#github-stats' },
+    { label: 'LeetCode', href: '#leetcode-stats' },
     { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },
     { label: 'Contact', href: '#contact' },

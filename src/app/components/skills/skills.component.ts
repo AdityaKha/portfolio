@@ -59,14 +59,17 @@ const categories = [
   standalone: true,
   imports: [CommonModule],
   template: `
-    <section id="skills" class="section-padding bg-bg-primary/50">
+    <section id="skills" class="section-padding bg-gradient-dark">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-12">
+        <h2 class="text-4xl md:text-5xl font-bold text-text-primary mb-4">
           Skills & Expertise
         </h2>
+        <p class="text-text-secondary mb-12 max-w-2xl">
+          Specialized in full-stack development with deep expertise across modern tech stacks
+        </p>
 
         <!-- Category tabs -->
-        <div class="flex flex-wrap gap-2 mb-8">
+        <div class="flex flex-wrap gap-2 mb-10">
           <button
             *ngFor="let cat of categories"
             (click)="activeCategory = cat.id"
@@ -79,19 +82,19 @@ const categories = [
           </button>
         </div>
 
-        <!-- Skill bars -->
-        <div class="space-y-5">
-          <div *ngFor="let skill of getActiveSkills(); let i = index">
-            <div class="space-y-1.5">
-              <div class="flex justify-between items-center">
-                <span class="text-text-secondary text-xs font-medium">{{ skill.name }}</span>
-                <span class="text-text-muted text-[10px] font-mono">{{ skill.level }}%</span>
+        <!-- Skill cards grid -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div *ngFor="let skill of getActiveSkills(); let i = index" class="glass-soft rounded-xl p-5 border border-white/10 hover:border-white/20 transition-all">
+            <div class="space-y-2">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-text-secondary text-sm font-semibold">{{ skill.name }}</span>
+                <span class="text-text-muted text-xs font-mono bg-white/5 px-2 py-1 rounded-full">{{ skill.level }}%</span>
               </div>
-              <div class="h-1 bg-white/5 rounded-full overflow-hidden">
+              <div class="h-2 bg-white/10 rounded-full overflow-hidden backdrop-blur">
                 <div
-                  class="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                  class="h-full rounded-full bg-gradient-to-r from-white/60 to-white/40"
                   [style.width.%]="skill.level"
-                  style="transition: width 0.9s ease-out;"
+                  style="transition: width 0.9s ease-out; box-shadow: 0 0 12px rgba(255,255,255,0.3);"
                 ></div>
               </div>
             </div>

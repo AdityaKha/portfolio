@@ -12,6 +12,8 @@ import { EducationComponent } from './components/education/education.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TypewriterComponent } from './components/typewriter/typewriter.component';
+import { GitHubHeatmapComponent } from './components/github-heatmap/github-heatmap.component';
+import { LeetcodeHeatmapComponent } from './components/leetcode-heatmap/leetcode-heatmap.component';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +29,8 @@ import { TypewriterComponent } from './components/typewriter/typewriter.componen
     SkillsComponent,
     ProjectsComponent,
     EducationComponent,
+    GitHubHeatmapComponent,
+    LeetcodeHeatmapComponent,
     ContactComponent,
     FooterComponent,
   ],
@@ -40,6 +44,8 @@ import { TypewriterComponent } from './components/typewriter/typewriter.componen
         <app-about></app-about>
         <app-experience></app-experience>
         <app-skills></app-skills>
+        <app-github-heatmap></app-github-heatmap>
+        <app-leetcode-heatmap></app-leetcode-heatmap>
         <app-projects></app-projects>
         <app-education></app-education>
         <app-contact></app-contact>
