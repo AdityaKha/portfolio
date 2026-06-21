@@ -2,7 +2,7 @@ import {
   Component,
   ViewChild,
   ElementRef,
-  OnInit,
+  AfterViewInit,
   OnDestroy,
   NgZone,
   ChangeDetectionStrategy,
@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomCursorComponent implements OnInit, OnDestroy {
+export class CustomCursorComponent implements AfterViewInit, OnDestroy {
   @ViewChild('dotEl') dotEl!: ElementRef<HTMLDivElement>;
   @ViewChild('ringEl') ringEl!: ElementRef<HTMLDivElement>;
   @ViewChild('glowOuterEl') glowOuterEl!: ElementRef<HTMLDivElement>;
@@ -36,7 +36,7 @@ export class CustomCursorComponent implements OnInit, OnDestroy {
 
   constructor(private ngZone: NgZone) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     const isTouchDevice = window.matchMedia('(hover: none)').matches;
     if (isTouchDevice) return;
 

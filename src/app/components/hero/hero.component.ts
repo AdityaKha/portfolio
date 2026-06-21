@@ -51,6 +51,19 @@ const roles = [
       <canvas #particleCanvas class="absolute inset-0 w-full h-full pointer-events-none opacity-60"></canvas>
 
       <div class="relative z-10 max-w-6xl mx-auto px-6 pt-28 pb-16">
+        <!-- Full-width name banner -->
+        <div
+          [@fadeInUp]="{ value: 'visible', params: { delay: 150 } }"
+          class="text-center mb-12"
+        >
+          <h1 class="w-full text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black text-text-primary leading-[1.05] tracking-tight">
+            Aditya Khandelwal
+          </h1>
+          <h1 class="w-full text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black gradient-text leading-[1.05] tracking-tight">
+            Portfolio
+          </h1>
+        </div>
+
         <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
           <!-- Left content -->
           <div class="flex-1 text-center lg:text-left max-w-2xl">
@@ -64,15 +77,6 @@ const roles = [
                 Available for new opportunities
               </span>
             </div>
-
-            <!-- Name -->
-            <h1
-              [@fadeInUp]="{ value: 'visible', params: { delay: 200 } }"
-              class="text-5xl sm:text-6xl lg:text-7xl font-black text-text-primary leading-[1.05] tracking-tight mb-4"
-            >
-              Aditya<br />
-              <span class="gradient-text">Khandelwal</span>
-            </h1>
 
             <!-- Role typewriter -->
             <div
@@ -151,36 +155,28 @@ const roles = [
             </div>
           </div>
 
-          <!-- Right: floating tech badges -->
+          <!-- Profile photo with floating tech badges -->
           <div
             [@fadeInUp]="{ value: 'visible', params: { delay: 300 } }"
-            class="relative w-72 h-72 md:w-96 md:h-96 flex-shrink-0 hidden lg:block"
+            class="relative w-[280px] h-[280px] sm:w-[376px] sm:h-[376px] flex-shrink-0 hidden md:block"
           >
-            <!-- Center circle -->
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-28 h-28 rounded-2xl glass border border-white/10 flex items-center justify-center shadow-lg">
-                <span class="text-4xl font-black gradient-text">AK</span>
-              </div>
+            <div
+              *ngFor="let badge of floatingBadges; let i = index"
+              class="absolute glass px-3 py-1.5 rounded-full text-xs font-medium text-text-secondary border border-white/10 animate-float whitespace-nowrap"
+              [style.left.px]="calcBadgeX(i)"
+              [style.top.px]="calcBadgeY(i)"
+              [style.animation-delay.s]="badge.delay"
+              style="transform: translate(-50%, -50%);"
+            >
+              {{ badge.label }}
             </div>
 
-            <!-- Orbit rings -->
-            <div class="absolute inset-8 rounded-full border border-white/5 animate-spin-slow"></div>
-            <div class="absolute inset-4 rounded-full border border-white/5" style="animation: spin 30s linear infinite reverse;"></div>
-
-            <!-- Orbiting badges -->
-            <div *ngFor="let badge of floatingBadges; let i = index">
-              <div
-                [style.left.px]="calcBadgeX(i)"
-                [style.top.px]="calcBadgeY(i)"
-                class="absolute transform -translate-x-1/2 -translate-y-1/2"
-                [@fadeInUp]="{ value: 'visible', params: { delay: 500 + badge.delay * 150 } }"
-              >
-                <div
-                  class="px-2.5 py-1 rounded-full bg-bg-card border border-border text-text-secondary text-[10px] font-bold whitespace-nowrap"
-                >
-                  {{ badge.label }}
-                </div>
-              </div>
+            <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-44 h-44 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl glow-blue">
+              <img
+                src="assets/Full_photo.jpeg"
+                alt="Aditya Khandelwal"
+                class="w-full h-full object-cover object-top"
+              />
             </div>
           </div>
         </div>
@@ -281,7 +277,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
         ctx.fill();
       });
 
@@ -293,7 +289,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 100) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${0.08 * (1 - dist / 100)})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.08 * (1 - dist / 100)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(this.particles[i].x, this.particles[i].y);
             ctx.lineTo(this.particles[j].x, this.particles[j].y);

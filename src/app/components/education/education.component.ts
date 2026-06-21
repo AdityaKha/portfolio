@@ -106,16 +106,6 @@ const certs = [
             </div>
           </div>
         </div>
-
-        <!-- Continuous learning note -->
-        <div class="mt-10 glass rounded-2xl p-5 border border-white/5 flex items-center gap-4">
-          <span class="text-2xl">📚</span>
-          <p class="text-text-muted text-sm leading-relaxed">
-            <span class="text-text-primary font-semibold">Continuously learning — </span>
-            staying current with Spring ecosystem updates, cloud-native patterns, and front-end
-            performance techniques through documentation, open-source, and hands-on experimentation.
-          </p>
-        </div>
       </div>
     </section>
   `,

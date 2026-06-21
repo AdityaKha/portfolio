@@ -163,7 +163,7 @@ function buildRingArc(length: number): RingArc {
 
 function buildRings(stats: LeetcodeStats): StatRing[] {
   return [
-    { label: 'Total', color: '#6366f1', solved: stats.totalSolved, total: stats.totalQuestions },
+    { label: 'Total', color: '#3b3b43', solved: stats.totalSolved, total: stats.totalQuestions },
     { label: 'Easy', color: '#22c55e', solved: stats.easySolved, total: stats.totalEasy },
     { label: 'Medium', color: '#eab308', solved: stats.mediumSolved, total: stats.totalMedium },
     { label: 'Hard', color: '#ef4444', solved: stats.hardSolved, total: stats.totalHard },

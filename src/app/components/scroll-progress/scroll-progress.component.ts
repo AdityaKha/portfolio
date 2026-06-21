@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
       top: 0;
       left: 0;
       height: 2px;
-      background: #6366f1;
+      background: #3b3b43;
       z-index: 9999;
       transition: width 100ms ease-out;
     }

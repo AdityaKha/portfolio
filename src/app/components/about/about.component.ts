@@ -2,29 +2,6 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FadeInDirective } from '../../directives/fade-in.directive';
 
-const pillars = [
-  {
-    icon: '📐',
-    title: 'Full-Stack Depth',
-    desc: 'From database schema to pixel-perfect UI — I own the entire vertical slice, reducing handoff friction and shipping faster.',
-  },
-  {
-    icon: '⚙️',
-    title: 'Systems Thinking',
-    desc: 'Kafka-driven event architectures, layered Spring Boot services, and horizontally scalable microservices that stay reliable under load.',
-  },
-  {
-    icon: '⚡',
-    title: 'Quality Culture',
-    desc: 'SOLID principles, 30% higher test coverage with JUnit & Jasmine, and consistent production-bug reduction through disciplined refactoring.',
-  },
-  {
-    icon: '👥',
-    title: 'Engineering Leadership',
-    desc: 'Mentored junior developers and drove a 20% improvement in team velocity by fostering best practices and clear technical communication.',
-  },
-];
-
 const timeline = [
   { year: '2018', event: 'Started B.Tech in Information Technology at ABES Engineering College' },
   { year: '2022', event: 'Graduated with CGPA 8.17 — began career at DXC Technology' },
@@ -53,7 +30,7 @@ const timeline = [
           </p>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
+        <div class="grid lg:grid-cols-2 gap-12 items-start">
           <!-- Story -->
           <div appFadeIn class="space-y-5 text-text-secondary leading-relaxed">
             <p>
@@ -98,20 +75,10 @@ const timeline = [
             </div>
           </div>
         </div>
-
-        <!-- Pillars -->
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div *ngFor="let pillar of pillars; let i = index" class="glass rounded-2xl p-5 border border-white/5 card-hover h-full">
-            <div class="text-2xl mb-4">{{ pillar.icon }}</div>
-            <h3 class="text-text-primary font-semibold text-sm mb-2">{{ pillar.title }}</h3>
-            <p class="text-text-muted text-xs leading-relaxed">{{ pillar.desc }}</p>
-          </div>
-        </div>
       </div>
     </section>
   `,
 })
 export class AboutComponent {
-  protected pillars = pillars;
   protected timeline = timeline;
 }

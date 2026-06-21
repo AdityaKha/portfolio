@@ -15,10 +15,10 @@ export default {
           card: '#171717',
         },
         accent: {
-          blue: '#6366f1',
-          cyan: '#818cf8',
-          purple: '#4f46e5',
-          violet: '#6366f1',
+          blue: '#e4e4e7',
+          cyan: '#ffffff',
+          purple: '#a1a1aa',
+          violet: '#e4e4e7',
         },
         text: {
           primary: '#ededed',
