@@ -70,8 +70,6 @@ const projects = [
   imports: [CommonModule],
   template: `
     <section id="projects" class="section-padding relative overflow-hidden">
-      <div class="absolute top-0 left-1/3 w-96 h-96 bg-blue-500/6 rounded-full blur-3xl pointer-events-none"></div>
-
       <div class="max-w-5xl mx-auto px-6">
         <div class="text-center mb-16">
           <h2 class="text-4xl sm:text-5xl font-black text-text-primary leading-tight mb-4">
@@ -94,13 +92,13 @@ const projects = [
               <div class="flex items-start justify-between gap-4 mb-4">
                 <div class="flex items-start gap-4">
                   <div
-                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+                    class="w-12 h-12 rounded-xl bg-accent-blue flex items-center justify-center text-white flex-shrink-0"
                   >
                     📦
                   </div>
                   <div>
                     <div class="flex items-center gap-2 flex-wrap mb-0.5">
-                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent-blue/10 text-accent-blue border border-accent-blue/30">
                         {{ project.category }}
                       </span>
                       <span class="text-text-muted text-[10px]">{{ project.company }}</span>

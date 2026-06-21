@@ -35,10 +35,6 @@ const socials = [
   imports: [CommonModule, FormsModule],
   template: `
     <section id="contact" class="section-padding relative overflow-hidden">
-      <!-- Background glows -->
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/6 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute bottom-0 right-0 w-64 h-64 bg-purple-500/8 rounded-full blur-3xl pointer-events-none"></div>
-
       <div class="max-w-5xl mx-auto px-6">
         <div class="text-center mb-16">
           <h2 class="text-4xl sm:text-5xl font-black text-text-primary leading-tight mb-4">
@@ -58,7 +54,7 @@ const socials = [
             <div class="space-y-6">
               <!-- Location -->
               <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-accent-blue flex-shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue flex-shrink-0">
                   📍
                 </div>
                 <div>
@@ -70,7 +66,7 @@ const socials = [
 
               <!-- Phone -->
               <div class="flex items-start gap-3">
-                <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-accent-violet flex-shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue flex-shrink-0">
                   📱
                 </div>
                 <div>
@@ -129,7 +125,7 @@ const socials = [
                         name="name"
                         required
                         placeholder="Jane Smith"
-                        class="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-blue/50 focus:bg-blue-500/5 transition-all"
+                        class="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-blue/50 focus:bg-accent-blue/5 transition-all"
                       />
                     </div>
                     <div>
@@ -142,7 +138,7 @@ const socials = [
                         name="email"
                         required
                         placeholder="jane@company.com"
-                        class="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-blue/50 focus:bg-blue-500/5 transition-all"
+                        class="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-blue/50 focus:bg-accent-blue/5 transition-all"
                       />
                     </div>
                   </div>
@@ -156,7 +152,7 @@ const socials = [
                       required
                       rows="5"
                       placeholder="Tell me about the opportunity, project, or just say hi..."
-                      class="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-blue/50 focus:bg-blue-500/5 transition-all resize-none"
+                      class="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-3 text-text-primary text-sm placeholder:text-text-muted focus:outline-none focus:border-accent-blue/50 focus:bg-accent-blue/5 transition-all resize-none"
                     ></textarea>
                   </div>
                   <button

@@ -13,7 +13,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TypewriterComponent } from './components/typewriter/typewriter.component';
 import { GitHubHeatmapComponent } from './components/github-heatmap/github-heatmap.component';
-import { LeetcodeHeatmapComponent } from './components/leetcode-heatmap/leetcode-heatmap.component';
+import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode-profile.component';
 
 @Component({
   selector: 'app-root',
@@ -30,7 +30,7 @@ import { LeetcodeHeatmapComponent } from './components/leetcode-heatmap/leetcode
     ProjectsComponent,
     EducationComponent,
     GitHubHeatmapComponent,
-    LeetcodeHeatmapComponent,
+    LeetcodeProfileComponent,
     ContactComponent,
     FooterComponent,
   ],
@@ -45,7 +45,7 @@ import { LeetcodeHeatmapComponent } from './components/leetcode-heatmap/leetcode
         <app-experience></app-experience>
         <app-skills></app-skills>
         <app-github-heatmap></app-github-heatmap>
-        <app-leetcode-heatmap></app-leetcode-heatmap>
+        <app-leetcode-profile></app-leetcode-profile>
         <app-projects></app-projects>
         <app-education></app-education>
         <app-contact></app-contact>

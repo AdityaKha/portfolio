@@ -34,10 +34,8 @@ const certs = [
               <h3 class="text-text-primary font-bold text-base">Academic Background</h3>
             </div>
             <div class="glass rounded-2xl p-6 border border-white/5 card-hover relative overflow-hidden">
-              <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-blue-500/10 to-transparent rounded-bl-3xl"></div>
-
               <div class="relative">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-accent-blue mb-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-xs font-bold text-accent-blue mb-4">
                   🎓 Bachelor of Technology
                 </span>
 
@@ -67,7 +65,7 @@ const certs = [
                   </div>
                   <div class="h-2 bg-white/5 rounded-full overflow-hidden">
                     <div
-                      class="h-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-500"
+                      class="h-full rounded-full bg-accent-blue"
                       style="width: 81.7%; transition: width 1s ease-out;"
                     ></div>
                   </div>
@@ -92,7 +90,7 @@ const certs = [
             </div>
             <div class="space-y-3">
               <div *ngFor="let cert of certs" class="glass rounded-xl px-4 py-3.5 border border-white/5 card-hover flex items-center gap-4">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-lg flex-shrink-0">
+                <div class="w-10 h-10 rounded-xl bg-accent-blue flex items-center justify-center text-lg flex-shrink-0">
                   {{ cert.icon }}
                 </div>
                 <div class="flex-1 min-w-0">

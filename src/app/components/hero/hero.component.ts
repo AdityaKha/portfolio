@@ -23,14 +23,14 @@ const stats = [
 ];
 
 const floatingBadges = [
-  { label: 'Java 17+', color: 'from-orange-500 to-red-500', delay: 0 },
-  { label: 'Spring Boot', color: 'from-green-500 to-emerald-600', delay: 0.4 },
-  { label: 'Angular', color: 'from-red-500 to-pink-500', delay: 0.8 },
-  { label: 'Apache Kafka', color: 'from-gray-600 to-slate-700', delay: 1.2 },
-  { label: 'PostgreSQL', color: 'from-blue-500 to-cyan-600', delay: 1.6 },
-  { label: 'Docker', color: 'from-blue-400 to-sky-600', delay: 2.0 },
-  { label: 'AWS', color: 'from-yellow-500 to-orange-500', delay: 2.4 },
-  { label: 'Kubernetes', color: 'from-blue-600 to-indigo-600', delay: 2.8 },
+  { label: 'Java 17+', delay: 0 },
+  { label: 'Spring Boot', delay: 0.4 },
+  { label: 'Angular', delay: 0.8 },
+  { label: 'Apache Kafka', delay: 1.2 },
+  { label: 'PostgreSQL', delay: 1.6 },
+  { label: 'Docker', delay: 2.0 },
+  { label: 'AWS', delay: 2.4 },
+  { label: 'Kubernetes', delay: 2.8 },
 ];
 
 const roles = [
@@ -47,11 +47,6 @@ const roles = [
   imports: [CommonModule, TypewriterComponent],
   template: `
     <section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden grid-bg">
-      <!-- Background glow blobs -->
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
       <!-- Particle canvas -->
       <canvas #particleCanvas class="absolute inset-0 w-full h-full pointer-events-none opacity-60"></canvas>
 
@@ -181,8 +176,7 @@ const roles = [
                 [@fadeInUp]="{ value: 'visible', params: { delay: 500 + badge.delay * 150 } }"
               >
                 <div
-                  [ngClass]="'bg-gradient-to-r ' + badge.color"
-                  class="px-2.5 py-1 rounded-full text-white text-[10px] font-bold shadow-lg whitespace-nowrap"
+                  class="px-2.5 py-1 rounded-full bg-bg-card border border-border text-text-secondary text-[10px] font-bold whitespace-nowrap"
                 >
                   {{ badge.label }}
                 </div>
@@ -287,7 +281,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(79, 142, 247, ${p.opacity})`;
+        ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
         ctx.fill();
       });
 
@@ -299,7 +293,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 100) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(79, 142, 247, ${0.08 * (1 - dist / 100)})`;
+            ctx.strokeStyle = `rgba(99, 102, 241, ${0.08 * (1 - dist / 100)})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(this.particles[i].x, this.particles[i].y);
             ctx.lineTo(this.particles[j].x, this.particles[j].y);

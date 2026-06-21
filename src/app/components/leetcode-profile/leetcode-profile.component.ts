@@ -11,11 +11,11 @@ import {
 } from 'rxjs/operators';
 import { FadeInDirective } from '../../directives/fade-in.directive';
 import {
-  GithubContributions,
-  GithubProfile,
-  GithubRepoSummary,
-  GithubStatsService,
-} from '../../services/github-stats.service';
+  LeetcodeBadge,
+  LeetcodeProfileInfo,
+  LeetcodeStats,
+  LeetcodeStatsService,
+} from '../../services/leetcode-stats.service';
 
 interface HeatmapDay {
   date: Date;
@@ -29,35 +29,51 @@ interface HeatmapWeek {
   days: HeatmapDay[];
 }
 
-interface GithubViewModel {
-  profile: GithubProfile;
-  totalStars: number;
-  totalForks: number;
-  weeks: HeatmapWeek[];
-  totalContributions: number;
-  activeDays: number;
-  currentStreak: number;
-  longestStreak: number;
+interface RingArc {
+  dasharray: string;
+  dashoffset: number;
 }
 
-type GithubState =
+interface StatRing {
+  label: string;
+  color: string;
+  solved: number;
+  percent: number;
+  arc: RingArc;
+}
+
+interface LeetcodeViewModel {
+  ranking: number;
+  totalSolved: number;
+  rings: StatRing[];
+  avatar: string | null;
+  badges: LeetcodeBadge[];
+  weeks: HeatmapWeek[];
+  totalSubmissions: number;
+  activeDays: number;
+  maxStreak: number;
+}
+
+type LeetcodeState =
   | { status: 'loading' }
   | { status: 'error' }
-  | { status: 'success'; vm: GithubViewModel };
+  | { status: 'success'; vm: LeetcodeViewModel };
 
-interface RawGithubData {
-  profile: GithubProfile;
-  repos: GithubRepoSummary[];
-  contributions: GithubContributions;
+interface RawLeetcodeData {
+  stats: LeetcodeStats;
+  profile: LeetcodeProfileInfo;
+  badges: LeetcodeBadge[];
 }
 
 type RawState =
   | { status: 'loading' }
   | { status: 'error' }
-  | { status: 'success'; data: RawGithubData };
+  | { status: 'success'; data: RawLeetcodeData };
 
 const DAY_MS = 86_400_000;
 const WEEKS_PER_MONTH = 4.345;
+const RING_RADIUS = 48;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 const MONTH_NAMES = [
   'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
@@ -71,25 +87,24 @@ function monthsForViewportWidth(width: number): number {
 
 function getLevel(count: number): number {
   if (count === 0) return 0;
-  if (count < 3) return 1;
-  if (count < 6) return 2;
-  if (count < 9) return 3;
+  if (count < 2) return 1;
+  if (count < 4) return 2;
+  if (count < 6) return 3;
   return 4;
 }
 
 function buildHeatmap(
-  days: { date: string; count: number }[],
+  submissionCalendar: Record<string, number>,
   weeksToShow: number
 ): {
   weeks: HeatmapWeek[];
-  totalContributions: number;
+  totalSubmissions: number;
   activeDays: number;
-  currentStreak: number;
-  longestStreak: number;
+  maxStreak: number;
 } {
   const dayCounts = new Map<number, number>();
-  for (const { date, count } of days) {
-    dayCounts.set(Math.floor(new Date(`${date}T00:00:00Z`).getTime() / DAY_MS), count);
+  for (const [epochSeconds, count] of Object.entries(submissionCalendar)) {
+    dayCounts.set(Math.floor(Number(epochSeconds) / 86_400), count);
   }
 
   const today = new Date();
@@ -104,101 +119,100 @@ function buildHeatmap(
   let lastMonth = -1;
 
   for (let w = 0; w < weeksToShow; w++) {
-    const weekDays: HeatmapDay[] = [];
+    const days: HeatmapDay[] = [];
     for (let d = 0; d < 7; d++) {
       const dayIndex = firstDayIndex + w * 7 + d;
       const date = new Date(dayIndex * DAY_MS);
       const isFuture = dayIndex > todayUtcDayIndex;
       const count = dayCounts.get(dayIndex) ?? 0;
-      weekDays.push({ date, count, level: isFuture ? 0 : getLevel(count), isFuture });
+      days.push({ date, count, level: isFuture ? 0 : getLevel(count), isFuture });
     }
 
-    const firstDayMonth = weekDays[0].date.getUTCMonth();
+    const firstDayMonth = days[0].date.getUTCMonth();
     const label = firstDayMonth !== lastMonth ? MONTH_NAMES[firstDayMonth] : null;
     lastMonth = firstDayMonth;
 
-    weeks.push({ label, days: weekDays });
+    weeks.push({ label, days });
   }
 
   const windowDayIndices = Array.from(dayCounts.keys())
     .filter((dayIndex) => dayIndex >= firstDayIndex && dayIndex <= todayUtcDayIndex)
     .sort((a, b) => a - b);
 
-  let longestStreak = 0;
-  let streak = 0;
+  let maxStreak = 0;
+  let currentStreak = 0;
   let previousIndex: number | null = null;
 
   for (const dayIndex of windowDayIndices) {
-    if ((dayCounts.get(dayIndex) ?? 0) === 0) {
-      streak = 0;
-      previousIndex = dayIndex;
-      continue;
-    }
-    streak = previousIndex === dayIndex - 1 ? streak + 1 : 1;
-    longestStreak = Math.max(longestStreak, streak);
+    currentStreak = previousIndex === dayIndex - 1 ? currentStreak + 1 : 1;
+    maxStreak = Math.max(maxStreak, currentStreak);
     previousIndex = dayIndex;
   }
 
-  let currentStreak = 0;
-  for (let dayIndex = todayUtcDayIndex; dayCounts.get(dayIndex); dayIndex--) {
-    currentStreak++;
-  }
-
-  const totalContributions = windowDayIndices.reduce(
+  const totalSubmissions = windowDayIndices.reduce(
     (sum, dayIndex) => sum + (dayCounts.get(dayIndex) ?? 0),
     0
   );
 
-  return {
-    weeks,
-    totalContributions,
-    activeDays: windowDayIndices.filter((dayIndex) => (dayCounts.get(dayIndex) ?? 0) > 0).length,
-    currentStreak,
-    longestStreak,
-  };
+  return { weeks, totalSubmissions, activeDays: windowDayIndices.length, maxStreak };
+}
+
+function buildRingArc(length: number): RingArc {
+  return { dasharray: `${length} ${RING_CIRCUMFERENCE}`, dashoffset: 0 };
+}
+
+function buildRings(stats: LeetcodeStats): StatRing[] {
+  return [
+    { label: 'Total', color: '#6366f1', solved: stats.totalSolved, total: stats.totalQuestions },
+    { label: 'Easy', color: '#22c55e', solved: stats.easySolved, total: stats.totalEasy },
+    { label: 'Medium', color: '#eab308', solved: stats.mediumSolved, total: stats.totalMedium },
+    { label: 'Hard', color: '#ef4444', solved: stats.hardSolved, total: stats.totalHard },
+  ].map(({ label, color, solved, total }) => {
+    const percent = total > 0 ? Math.min(100, (solved / total) * 100) : 0;
+    return { label, color, solved, percent, arc: buildRingArc((percent / 100) * RING_CIRCUMFERENCE) };
+  });
 }
 
 function buildViewModel(
-  profile: GithubProfile,
-  repos: GithubRepoSummary[],
-  contributions: GithubContributions,
+  stats: LeetcodeStats,
+  profile: LeetcodeProfileInfo,
+  badges: LeetcodeBadge[],
   monthsToShow: number
-): GithubViewModel {
+): LeetcodeViewModel {
   const weeksToShow = Math.round(monthsToShow * WEEKS_PER_MONTH);
-  const { weeks, totalContributions, activeDays, currentStreak, longestStreak } = buildHeatmap(
-    contributions.days,
+  const { weeks, totalSubmissions, activeDays, maxStreak } = buildHeatmap(
+    stats.submissionCalendar,
     weeksToShow
   );
 
   return {
-    profile,
-    totalStars: repos.reduce((sum, repo) => sum + repo.stars, 0),
-    totalForks: repos.reduce((sum, repo) => sum + repo.forks, 0),
+    ranking: stats.ranking,
+    totalSolved: stats.totalSolved,
+    rings: buildRings(stats),
+    avatar: profile.avatar,
+    badges,
     weeks,
-    totalContributions,
+    totalSubmissions,
     activeDays,
-    currentStreak,
-    longestStreak,
+    maxStreak,
   };
 }
 
 @Component({
-  selector: 'app-github-heatmap',
+  selector: 'app-leetcode-profile',
   standalone: true,
   imports: [CommonModule, FadeInDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section id="github-stats" class="section-padding">
+    <section id="leetcode-stats" class="section-padding">
       <div class="max-w-6xl mx-auto px-6">
         <!-- Header -->
         <div class="mb-12" appFadeIn>
           <div class="flex items-center gap-3 mb-4">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" class="text-text-primary">
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              <path d="M16.102c0 .6-.3 1.2-.9 1.5l-9.6 5.4c-.6.3-1.2.3-1.8 0L.3 16.7c-.6-.3-.9-.9-.9-1.5V6.8c0-.6.3-1.2.9-1.5l9.6-5.4c.6-.3 1.2-.3 1.8 0l9.6 5.4c.6.3.9.9.9 1.5v8.4zm-1.2-7.2c0-.3-.15-.6-.45-.75l-4.8-2.7c-.3-.15-.6-.15-.9 0l-4.8 2.7c-.3.15-.45.45-.45.75v5.4c0 .3.15.6.45.75l4.8 2.7c.3.15.6.15.9 0l4.8-2.7c.3-.15.45-.45.45-.75v-5.4z" />
             </svg>
-            <h2 class="text-4xl md:text-5xl font-bold text-text-primary">
-              GitHub Contributions
-            </h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-text-primary">LeetCode Profile</h2>
           </div>
           <p class="text-text-secondary">
             Live stats from
@@ -219,7 +233,7 @@ function buildViewModel(
             class="glass-strong rounded-2xl p-12 text-center text-text-muted"
             appFadeIn
           >
-            Fetching live stats from GitHub&hellip;
+            Fetching live stats from LeetCode&hellip;
           </div>
 
           <!-- Error -->
@@ -228,7 +242,7 @@ function buildViewModel(
             class="glass-strong rounded-2xl p-12 text-center"
             appFadeIn
           >
-            <p class="text-text-secondary mb-4">Couldn't load live GitHub stats right now.</p>
+            <p class="text-text-secondary mb-4">Couldn't load live LeetCode stats right now.</p>
             <div class="flex items-center justify-center gap-3">
               <button (click)="retry()" class="btn-primary"><span>Retry</span></button>
               <a [href]="profileUrl" target="_blank" rel="noopener noreferrer" class="btn-outline"
@@ -246,63 +260,81 @@ function buildViewModel(
                 appFadeIn
               >
                 <img
-                  [src]="state.vm.profile.avatarUrl"
+                  *ngIf="state.vm.avatar; else avatarFallback"
+                  [src]="state.vm.avatar"
                   alt="{{ username }} avatar"
                   class="w-20 h-20 rounded-full object-cover mb-4 border border-white/10"
                 />
-                <div class="text-lg font-semibold text-text-primary">
-                  {{ state.vm.profile.name || state.vm.profile.login }}
-                </div>
-                <p *ngIf="state.vm.profile.bio" class="text-sm text-text-muted mt-1 mb-4">
-                  {{ state.vm.profile.bio }}
-                </p>
+                <ng-template #avatarFallback>
+                  <div
+                    class="w-20 h-20 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-2xl font-bold text-white mb-4"
+                  >
+                    {{ initials }}
+                  </div>
+                </ng-template>
+                <div class="text-lg font-semibold text-text-primary">{{ username }}</div>
+                <div class="text-sm text-text-muted mb-4">Rank {{ state.vm.ranking | number }}</div>
                 <a
                   [href]="profileUrl"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="btn-outline text-sm w-full text-center"
-                  >View on GitHub</a
+                  >View on LeetCode</a
                 >
               </div>
 
-              <!-- Stats cards -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="glass rounded-xl p-4 text-center flex flex-col justify-center">
-                  <div class="text-2xl font-bold gradient-text mb-1">
-                    {{ state.vm.totalContributions | number }}
+              <!-- Difficulty rings -->
+              <div class="glass-strong rounded-2xl p-6" appFadeIn>
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                  <div class="text-sm text-text-muted">
+                    <span class="text-text-primary font-semibold">{{ state.vm.totalSolved }}</span>
+                    questions solved
                   </div>
-                  <div class="text-xs text-text-muted font-medium">Contributions</div>
+                  <div *ngIf="state.vm.badges.length" class="flex items-center gap-3">
+                    <img
+                      *ngFor="let badge of state.vm.badges"
+                      [src]="badge.icon"
+                      [alt]="badge.displayName"
+                      [title]="badge.displayName"
+                      class="w-9 h-9 object-contain"
+                    />
+                  </div>
                 </div>
-                <div class="glass rounded-xl p-4 text-center flex flex-col justify-center">
-                  <div class="text-2xl font-bold gradient-text mb-1">
-                    {{ state.vm.profile.publicRepos | number }}
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  <div *ngFor="let ring of state.vm.rings" class="flex flex-col items-center">
+                    <svg width="120" height="120" viewBox="0 0 120 120">
+                      <circle cx="60" cy="60" r="48" fill="none" stroke="#262626" stroke-width="10" />
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="48"
+                        fill="none"
+                        [attr.stroke]="ring.color"
+                        stroke-width="10"
+                        stroke-linecap="round"
+                        transform="rotate(-90 60 60)"
+                        [attr.stroke-dasharray]="ring.arc.dasharray"
+                        [attr.stroke-dashoffset]="ring.arc.dashoffset"
+                      />
+                      <text x="60" y="65" text-anchor="middle" class="fill-current text-text-primary" style="font-size: 24px; font-weight: 700;">
+                        {{ ring.solved }}
+                      </text>
+                    </svg>
+                    <span class="text-sm font-medium mt-1" [style.color]="ring.color">{{ ring.label }}</span>
                   </div>
-                  <div class="text-xs text-text-muted font-medium">Public Repos</div>
-                </div>
-                <div class="glass rounded-xl p-4 text-center flex flex-col justify-center">
-                  <div class="text-2xl font-bold gradient-text mb-1">
-                    {{ state.vm.totalStars | number }}
-                  </div>
-                  <div class="text-xs text-text-muted font-medium">Stars Earned</div>
-                </div>
-                <div class="glass rounded-xl p-4 text-center flex flex-col justify-center">
-                  <div class="text-2xl font-bold gradient-text mb-1">
-                    {{ state.vm.profile.followers | number }}
-                  </div>
-                  <div class="text-xs text-text-muted font-medium">Followers</div>
                 </div>
               </div>
             </div>
 
             <!-- Heatmap -->
-            <div class="glass-strong rounded-2xl p-6 mb-8" appFadeIn>
+            <div class="glass-strong rounded-2xl p-6" appFadeIn>
               <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
                 <h3 class="text-text-primary font-semibold">
-                  {{ state.vm.totalContributions | number }} contributions
+                  {{ state.vm.totalSubmissions }} submissions
                 </h3>
                 <div class="flex items-center gap-4 text-sm text-text-muted">
-                  <span>Active days: <strong class="text-text-primary">{{ state.vm.activeDays }}</strong></span>
-                  <span>Longest streak: <strong class="text-text-primary">{{ state.vm.longestStreak }}</strong></span>
+                  <span>Total active days: <strong class="text-text-primary">{{ state.vm.activeDays }}</strong></span>
+                  <span>Max streak: <strong class="text-text-primary">{{ state.vm.maxStreak }}</strong></span>
                 </div>
               </div>
 
@@ -346,36 +378,16 @@ function buildViewModel(
                 <span class="text-xs text-text-muted font-semibold">More</span>
               </div>
             </div>
-
-            <!-- Streaks -->
-            <div class="glass-strong rounded-2xl p-6 border border-white/10" appFadeIn>
-              <h3 class="text-text-primary font-semibold mb-4 flex items-center gap-2">
-                <span class="text-xl">🔥</span> Streaks
-              </h3>
-              <div class="grid sm:grid-cols-3 gap-3">
-                <div class="flex justify-between items-center">
-                  <span class="text-text-secondary text-sm">Current streak</span>
-                  <span class="text-lg font-bold gradient-text">{{ state.vm.currentStreak }} days</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-text-secondary text-sm">Longest streak</span>
-                  <span class="text-lg font-bold gradient-text">{{ state.vm.longestStreak }} days</span>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-text-secondary text-sm">Forks earned</span>
-                  <span class="text-lg font-bold gradient-text">{{ state.vm.totalForks }}</span>
-                </div>
-              </div>
-            </div>
           </ng-container>
         </ng-container>
       </div>
     </section>
   `,
 })
-export class GitHubHeatmapComponent {
-  readonly username = 'AdityaKha';
-  readonly profileUrl = `https://github.com/${this.username}`;
+export class LeetcodeProfileComponent {
+  readonly username = 'adityakha';
+  readonly profileUrl = `https://leetcode.com/u/${this.username}`;
+  readonly initials = this.username.slice(0, 2).toUpperCase();
 
   private readonly refresh$ = new BehaviorSubject<void>(undefined);
 
@@ -391,11 +403,13 @@ export class GitHubHeatmapComponent {
   private readonly rawData$: Observable<RawState> = this.refresh$.pipe(
     switchMap(() =>
       forkJoin({
-        profile: this.githubStats.getProfile(this.username),
-        repos: this.githubStats
-          .getRepoSummaries(this.username)
-          .pipe(catchError(() => of<GithubRepoSummary[]>([]))),
-        contributions: this.githubStats.getContributions(this.username),
+        stats: this.leetcodeStats.getStats(this.username),
+        profile: this.leetcodeStats
+          .getProfile(this.username)
+          .pipe(catchError(() => of<LeetcodeProfileInfo>({ avatar: null }))),
+        badges: this.leetcodeStats
+          .getBadges(this.username)
+          .pipe(catchError(() => of<LeetcodeBadge[]>([]))),
       }).pipe(
         map((data): RawState => ({ status: 'success', data })),
         startWith<RawState>({ status: 'loading' }),
@@ -405,20 +419,20 @@ export class GitHubHeatmapComponent {
     shareReplay({ bufferSize: 1, refCount: true })
   );
 
-  readonly state$: Observable<GithubState> = combineLatest([
+  readonly state$: Observable<LeetcodeState> = combineLatest([
     this.rawData$,
     this.monthsToShow$,
   ]).pipe(
-    map(([raw, months]): GithubState => {
+    map(([raw, months]): LeetcodeState => {
       if (raw.status !== 'success') return raw;
       return {
         status: 'success',
-        vm: buildViewModel(raw.data.profile, raw.data.repos, raw.data.contributions, months),
+        vm: buildViewModel(raw.data.stats, raw.data.profile, raw.data.badges, months),
       };
     })
   );
 
-  constructor(private githubStats: GithubStatsService) {}
+  constructor(private leetcodeStats: LeetcodeStatsService) {}
 
   retry(): void {
     this.refresh$.next();
@@ -431,6 +445,6 @@ export class GitHubHeatmapComponent {
       year: 'numeric',
       timeZone: 'UTC',
     });
-    return `${dateLabel}: ${day.count} contribution${day.count === 1 ? '' : 's'}`;
+    return `${dateLabel}: ${day.count} submission${day.count === 1 ? '' : 's'}`;
   }
 }

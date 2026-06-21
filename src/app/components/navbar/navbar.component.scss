@@ -1,0 +1,19 @@
+.liquid-glass-svg {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.navbar-glass {
+  height: min(10vh, 75px);
+  position: relative;
+  background-color: rgba(10, 10, 10, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  /* Fallback paint before JS measures the element and swaps in the
+     SVG-displacement filter (see LiquidGlassService); also used by
+     browsers that don't support url() inside backdrop-filter. */
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}

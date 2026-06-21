@@ -69,7 +69,7 @@ const experiences = [
             >
               <div class="flex items-start gap-4">
                 <div
-                  class="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-lg"
+                  class="flex-shrink-0 w-12 h-12 rounded-xl bg-accent-blue flex items-center justify-center text-white font-black text-sm"
                 >
                   {{ exp.company.charAt(0) }}
                 </div>

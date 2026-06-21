@@ -4,26 +4,28 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Lexend Deca', 'system-ui', 'sans-serif'],
+        heading: ['Zalando Sans Expanded', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
         bg: {
-          primary: '#080810',
-          secondary: '#0d0d1a',
-          card: '#111128',
+          primary: '#0a0a0a',
+          secondary: '#111111',
+          card: '#171717',
         },
         accent: {
-          blue: '#4F8EF7',
-          cyan: '#00D4FF',
-          purple: '#7C3AED',
-          violet: '#A855F7',
+          blue: '#6366f1',
+          cyan: '#818cf8',
+          purple: '#4f46e5',
+          violet: '#6366f1',
         },
         text: {
-          primary: '#F0F0FF',
-          secondary: '#9090B8',
-          muted: '#5A5A7A',
+          primary: '#ededed',
+          secondary: '#a1a1aa',
+          muted: '#71717a',
         },
+        border: '#262626',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',
