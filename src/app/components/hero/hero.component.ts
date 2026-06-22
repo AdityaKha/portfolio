@@ -17,20 +17,20 @@ import { TypewriterComponent } from '../typewriter/typewriter.component';
 
 const stats = [
   { value: '4+', label: 'Years Experience' },
-  { value: '350+', label: 'LeetCode Problems' },
+  { value: '400+', label: 'LeetCode Problems' },
   { value: '10K+', label: 'Users Impacted' },
   { value: '30%', label: 'Bug Reduction' },
 ];
 
 const floatingBadges = [
   { label: 'Java 17+', delay: 0 },
-  { label: 'Spring Boot', delay: 0.4 },
+  { label: 'HLD', delay: 2.4 },
   { label: 'Angular', delay: 0.8 },
-  { label: 'Apache Kafka', delay: 1.2 },
+  { label: 'Kafka', delay: 1.2 },
+  { label: 'DSA', delay: 2.8 },
   { label: 'PostgreSQL', delay: 1.6 },
-  { label: 'Docker', delay: 2.0 },
-  { label: 'AWS', delay: 2.4 },
-  { label: 'Kubernetes', delay: 2.8 },
+  { label: 'LLD', delay: 2.0 },
+  { label: 'Spring Boot', delay: 0.4 },
 ];
 
 const roles = [
@@ -225,7 +225,7 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
   private particles: Particle[] = [];
   private animationId?: number;
 
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone) { }
 
   ngAfterViewInit() {
     this.initParticleCanvas();
