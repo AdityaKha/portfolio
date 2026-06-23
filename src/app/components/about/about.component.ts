@@ -24,54 +24,16 @@ const timeline = [
             <br />
             <span class="gradient-text">Behind the Code</span>
           </h2>
-          <p class="text-text-secondary max-w-xl mx-auto leading-relaxed">
-            I don't just write code — I craft systems that perform, architectures that endure,
-            and products that delight the people who use them.
-          </p>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-start">
-          <!-- Story -->
-          <div appFadeIn class="space-y-5 text-text-secondary leading-relaxed">
-            <p>
-              My journey began with a single question:
-              <em class="text-text-primary not-italic font-medium">
-                "How do I build something people actually use?"
-              </em>
-              That question drove me through my B.Tech in Information Technology and has guided
-              every technical decision since.
-            </p>
-            <p>
-              At
-              <span class="text-accent-blue font-semibold">DXC Technology</span>, I cut my
-              teeth on high-traffic enterprise UIs — learning that every millisecond and every
-              defect matters. I reduced UI defects by 20% and shipped an MVP in just 6 weeks by
-              building trust between design, backend, and frontend teams.
-            </p>
-            <p>
-              Today, at
-              <span class="text-accent-blue font-semibold">Exsete Consulting</span>, I build
-              full-stack features for internal Google applications serving
-              <span class="text-text-primary font-semibold">10,000+ users</span>
-              daily. I
-              design event-driven pipelines with Apache Kafka, enforce security with JWT and
-              OAuth2, and continuously push code quality higher.
-            </p>
-            <p>
-              Beyond technical skills, I believe great engineers are multipliers — so I invest in
-              mentoring, code review culture, and documentation that outlasts any single developer.
-            </p>
-          </div>
-
-          <!-- Career timeline -->
-          <div class="relative pl-6">
-            <div class="absolute left-0 top-0 bottom-0 w-px timeline-line opacity-30"></div>
-            <div *ngFor="let item of timeline; let i = index" class="relative mb-8 last:mb-0">
-              <div class="absolute -left-6 top-0.5 w-3 h-3 rounded-full bg-accent-blue border-2 border-bg-primary shadow-[0_0_8px_rgba(79,142,247,0.6)]"></div>
-              <div class="glass rounded-xl px-4 py-3 border border-white/5 hover:border-accent-blue/20 transition-colors">
-                <span class="section-label text-accent-blue text-[11px]">{{ item.year }}</span>
-                <p class="text-text-secondary text-sm mt-1 leading-snug">{{ item.event }}</p>
-              </div>
+        <!-- Career timeline -->
+        <div class="relative max-w-2xl mx-auto" appFadeIn>
+          <div class="absolute left-[5px] top-0 bottom-0 w-0.5 timeline-line opacity-30"></div>
+          <div *ngFor="let item of timeline; let i = index" class="relative flex items-start gap-4 pb-8 last:pb-0">
+            <div class="relative z-10 mt-1 w-3 h-3 rounded-full bg-accent-blue border-2 border-bg-primary shadow-[0_0_8px_rgba(79,142,247,0.6)] flex-shrink-0"></div>
+            <div class="glass rounded-xl px-4 py-3 border border-white/5 hover:border-accent-blue/20 transition-colors flex-1">
+              <span class="section-label text-accent-blue text-[11px]">{{ item.year }}</span>
+              <p class="text-text-secondary text-sm mt-1 leading-snug">{{ item.event }}</p>
             </div>
           </div>
         </div>

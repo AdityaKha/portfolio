@@ -6,12 +6,10 @@ import { ScrollProgressComponent } from './components/scroll-progress/scroll-pro
 import { HeroComponent } from './components/hero/hero.component';
 import { AboutComponent } from './components/about/about.component';
 import { ExperienceComponent } from './components/experience/experience.component';
-import { SkillsComponent } from './components/skills/skills.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { EducationComponent } from './components/education/education.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { TypewriterComponent } from './components/typewriter/typewriter.component';
 import { GitHubHeatmapComponent } from './components/github-heatmap/github-heatmap.component';
 import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode-profile.component';
 
@@ -26,7 +24,6 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
     HeroComponent,
     AboutComponent,
     ExperienceComponent,
-    SkillsComponent,
     ProjectsComponent,
     EducationComponent,
     GitHubHeatmapComponent,
@@ -44,7 +41,6 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
         <app-leetcode-profile></app-leetcode-profile>
         <app-about></app-about>
         <app-experience></app-experience>
-        <app-skills></app-skills>
         <app-github-heatmap></app-github-heatmap>
         <app-projects></app-projects>
         <app-education></app-education>

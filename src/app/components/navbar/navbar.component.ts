@@ -72,7 +72,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'LeetCode', href: '#leetcode-stats' },
     { label: 'About', href: '#about' },
     { label: 'Experience', href: '#experience' },
-    { label: 'Skills', href: '#skills' },
     { label: 'GitHub', href: '#github-stats' },
     { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },

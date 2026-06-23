@@ -13,7 +13,6 @@ import {
   animate,
   style,
 } from '@angular/animations';
-import { TypewriterComponent } from '../typewriter/typewriter.component';
 
 const stats = [
   { value: '4+', label: 'Years Experience' },
@@ -33,18 +32,10 @@ const floatingBadges = [
   { label: 'Spring Boot', delay: 0.4 },
 ];
 
-const roles = [
-  'Senior Full-Stack Developer',
-  'Java & Spring Boot Expert',
-  'Angular Architect',
-  'Distributed Systems Builder',
-  'Kafka & Event-Driven Dev',
-];
-
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule, TypewriterComponent],
+  imports: [CommonModule],
   template: `
     <section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden grid-bg">
       <!-- Particle canvas -->
@@ -78,12 +69,12 @@ const roles = [
               </span>
             </div>
 
-            <!-- Role typewriter -->
+            <!-- Role -->
             <div
               [@fadeInUp]="{ value: 'visible', params: { delay: 400 } }"
-              class="text-xl sm:text-2xl font-semibold text-text-secondary mb-6 h-8"
+              class="text-xl sm:text-2xl font-semibold text-text-secondary mb-6"
             >
-              <app-typewriter [words]="roles"></app-typewriter>
+              Senior Software Engineer
             </div>
 
             <!-- Summary -->
@@ -91,13 +82,10 @@ const roles = [
               [@fadeInUp]="{ value: 'visible', params: { delay: 550 } }"
               class="text-text-secondary leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
             >
-              Full-Stack Developer with
-              <span class="text-text-primary font-semibold">~4 years</span> of experience
-              crafting enterprise-grade applications. I specialize in
-              <span class="text-accent-blue font-medium">Java, Spring Boot</span>, and
-              <span class="text-accent-blue font-medium">Angular</span> — building systems
-              that scale to
-              <span class="text-text-primary font-semibold">10,000+ users</span>.
+              Crafting reliable, high-performance products with
+              <span class="text-accent-blue font-medium">Java, Spring Boot</span>,
+              <span class="text-accent-blue font-medium">Angular</span>, and
+              <span class="text-accent-blue font-medium">Microservices</span>.
             </p>
 
             <!-- CTA buttons -->
@@ -220,7 +208,6 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
 
   protected stats = stats;
   protected floatingBadges = floatingBadges;
-  protected roles = roles;
 
   private particles: Particle[] = [];
   private animationId?: number;

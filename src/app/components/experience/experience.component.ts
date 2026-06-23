@@ -11,6 +11,8 @@ const experiences = [
   {
     role: 'Full-Stack Developer',
     company: 'Exsete Consulting Pvt. Ltd.',
+    logo: 'assets/exsete-logo.png',
+    logoBg: 'black',
     period: 'Apr 2023 – Present',
     location: 'Gurugram, India',
     type: 'Full-time',
@@ -29,6 +31,8 @@ const experiences = [
   {
     role: 'Associate Software Engineer',
     company: 'DXC Technology',
+    logo: 'assets/dxc-technology-logo.jpg',
+    logoBg: 'white',
     period: 'Jun 2022 – Mar 2023',
     location: 'India',
     type: 'Full-time',
@@ -69,9 +73,18 @@ const experiences = [
             >
               <div class="flex items-start gap-4">
                 <div
-                  class="flex-shrink-0 w-12 h-12 rounded-xl bg-accent-blue flex items-center justify-center text-white font-black text-sm"
+                  class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center text-white font-black text-sm overflow-hidden"
+                  [class.bg-black]="exp.logoBg === 'black'"
+                  [class.bg-white]="exp.logoBg === 'white'"
+                  [class.bg-accent-blue]="!exp.logo"
                 >
-                  {{ exp.company.charAt(0) }}
+                  <img
+                    *ngIf="exp.logo; else companyInitial"
+                    [src]="exp.logo"
+                    [alt]="exp.company + ' logo'"
+                    class="w-full h-full object-contain p-1.5"
+                  />
+                  <ng-template #companyInitial>{{ exp.company.charAt(0) }}</ng-template>
                 </div>
                 <div>
                   <div class="flex items-center gap-2 flex-wrap mb-1">
