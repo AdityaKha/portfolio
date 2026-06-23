@@ -41,11 +41,11 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
       <app-navbar></app-navbar>
       <main>
         <app-hero></app-hero>
+        <app-leetcode-profile></app-leetcode-profile>
         <app-about></app-about>
         <app-experience></app-experience>
         <app-skills></app-skills>
         <app-github-heatmap></app-github-heatmap>
-        <app-leetcode-profile></app-leetcode-profile>
         <app-projects></app-projects>
         <app-education></app-education>
         <app-contact></app-contact>

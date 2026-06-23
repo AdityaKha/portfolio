@@ -195,11 +195,16 @@ app-root {
 
 /* Section padding */
 .section-padding {
+  min-height: 100vh;
   padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
   .section-padding {
+    min-height: 100vh;
     padding: 4rem 0;
   }
 }

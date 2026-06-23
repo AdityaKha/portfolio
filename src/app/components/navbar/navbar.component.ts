@@ -69,11 +69,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   private resizeDebounce?: ReturnType<typeof setTimeout>;
 
   readonly links = [
+    { label: 'LeetCode', href: '#leetcode-stats' },
     { label: 'About', href: '#about' },
     { label: 'Experience', href: '#experience' },
     { label: 'Skills', href: '#skills' },
     { label: 'GitHub', href: '#github-stats' },
-    { label: 'LeetCode', href: '#leetcode-stats' },
     { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },
     { label: 'Contact', href: '#contact' },
