@@ -63,7 +63,7 @@ const floatingBadges = [
               [@fadeInUp]="{ value: 'visible', params: { delay: 100 } }"
               class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass border border-white/10 mb-6"
             >
-              <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+              <span class="w-2 h-2 rounded-full bg-zinc-300 animate-pulse"></span>
               <span class="text-xs text-text-secondary font-medium">
                 Available for new opportunities
               </span>

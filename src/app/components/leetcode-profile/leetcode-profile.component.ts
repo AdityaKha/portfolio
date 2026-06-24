@@ -164,9 +164,9 @@ function buildRingArc(length: number): RingArc {
 function buildRings(stats: LeetcodeStats): StatRing[] {
   return [
     { label: 'Total', color: '#3b3b43', solved: stats.totalSolved, total: stats.totalQuestions },
-    { label: 'Easy', color: '#22c55e', solved: stats.easySolved, total: stats.totalEasy },
-    { label: 'Medium', color: '#eab308', solved: stats.mediumSolved, total: stats.totalMedium },
-    { label: 'Hard', color: '#ef4444', solved: stats.hardSolved, total: stats.totalHard },
+    { label: 'Easy', color: '#52525b', solved: stats.easySolved, total: stats.totalEasy },
+    { label: 'Medium', color: '#a1a1aa', solved: stats.mediumSolved, total: stats.totalMedium },
+    { label: 'Hard', color: '#e4e4e7', solved: stats.hardSolved, total: stats.totalHard },
   ].map(({ label, color, solved, total }) => {
     const percent = total > 0 ? Math.min(100, (solved / total) * 100) : 0;
     return { label, color, solved, percent, arc: buildRingArc((percent / 100) * RING_CIRCUMFERENCE) };
