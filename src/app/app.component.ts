@@ -32,7 +32,7 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
     FooterComponent,
   ],
   template: `
-    <div class="relative">
+    <div class="relative overflow-x-hidden">
       <app-custom-cursor></app-custom-cursor>
       <app-scroll-progress></app-scroll-progress>
       <app-navbar></app-navbar>

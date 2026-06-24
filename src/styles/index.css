@@ -20,7 +20,6 @@ body {
   background-color: #0a0a0a;
   color: #ededed;
   font-family: 'Lexend Deca', system-ui, sans-serif;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
