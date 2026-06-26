@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CustomCursorComponent } from './components/custom-cursor/custom-cursor.component';
 import { ScrollProgressComponent } from './components/scroll-progress/scroll-progress.component';
@@ -16,8 +15,8 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
 @Component({
   selector: 'app-root',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     NavbarComponent,
     CustomCursorComponent,
     ScrollProgressComponent,

@@ -1,17 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ScrollDetectionService } from '../../services/scroll-detection.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-scroll-progress',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
       class="scroll-progress"
-      [style.width.%]="scrollProgress * 100"
+      [style.width.%]="scrollProgress() * 100"
     ></div>
   `,
   styles: [`
@@ -26,22 +25,13 @@ import { takeUntil } from 'rxjs/operators';
     }
   `],
 })
-export class ScrollProgressComponent implements OnInit, OnDestroy {
-  scrollProgress = 0;
-  private destroy$ = new Subject<void>();
+export class ScrollProgressComponent {
+  private scrollDetection = inject(ScrollDetectionService);
+  readonly scrollProgress = signal(0);
 
-  constructor(private scrollDetection: ScrollDetectionService) {}
-
-  ngOnInit() {
+  constructor() {
     this.scrollDetection.scroll$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(scroll => {
-        this.scrollProgress = scroll.progress;
-      });
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+      .pipe(takeUntilDestroyed())
+      .subscribe(scroll => this.scrollProgress.set(scroll.progress));
   }
 }

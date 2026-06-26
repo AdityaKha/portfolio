@@ -1,50 +1,28 @@
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnInit,
-  OnDestroy,
-} from '@angular/core';
+import { Directive, ElementRef, Input, inject } from '@angular/core';
 import { ScrollDetectionService } from '../services/scroll-detection.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Directive({
   selector: '[appFadeIn]',
   standalone: true,
 })
-export class FadeInDirective implements OnInit, OnDestroy {
+export class FadeInDirective {
   @Input() appFadeIn: number | string | null = 0;
-  private destroy$ = new Subject<void>();
+
+  private el = inject(ElementRef);
+  private scrollDetection = inject(ScrollDetectionService);
   private animated = false;
 
-  constructor(
-    private el: ElementRef,
-    private scrollDetection: ScrollDetectionService
-  ) {}
-
-  ngOnInit() {
-    const element = this.el.nativeElement as HTMLElement;
-
+  constructor() {
     this.scrollDetection
-      .observeElement(element)
-      .pipe(takeUntil(this.destroy$))
+      .observeElement(this.el.nativeElement)
+      .pipe(takeUntilDestroyed())
       .subscribe(isInView => {
         if (isInView && !this.animated) {
           this.animated = true;
-          this.animateElement();
+          const element = this.el.nativeElement as HTMLElement;
+          element.style.animation = `fadeInUp 0.6s ease-out ${this.appFadeIn}ms forwards`;
         }
       });
-  }
-
-  private animateElement() {
-    const element = this.el.nativeElement as HTMLElement;
-    const delay = this.appFadeIn;
-    element.style.animation = `fadeInUp 0.6s ease-out ${delay}ms forwards`;
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -33,7 +33,7 @@ const PROFILE_API_BASE = 'https://alfa-leetcode-api.onrender.com';
 
 @Injectable({ providedIn: 'root' })
 export class LeetcodeStatsService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getStats(username: string): Observable<LeetcodeStats> {
     return this.http.get<LeetcodeStats>(`${STATS_API_BASE}/${username}`);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FadeInDirective } from '../../directives/fade-in.directive';
 
@@ -14,6 +14,7 @@ const timeline = [
   selector: 'app-about',
   standalone: true,
   imports: [CommonModule, FadeInDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="about" class="section-padding">
       <div class="max-w-6xl mx-auto px-6">

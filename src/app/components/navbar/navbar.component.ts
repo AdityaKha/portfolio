@@ -1,12 +1,13 @@
 import {
   Component,
-  OnInit,
   AfterViewInit,
   OnDestroy,
   ChangeDetectionStrategy,
   ViewChild,
   ElementRef,
   NgZone,
+  inject,
+  signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -18,8 +19,7 @@ import {
 } from '@angular/animations';
 import { ScrollDetectionService } from '../../services/scroll-detection.service';
 import { LiquidGlassService } from '../../services/liquid-glass.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const LIQUID_GLASS_FILTER_ID = 'liquid-glass-distortion';
 
@@ -57,14 +57,18 @@ const LIQUID_GLASS_FILTER_ID = 'liquid-glass-distortion';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NavbarComponent implements AfterViewInit, OnDestroy {
   @ViewChild('navGlass') navGlassRef?: ElementRef<HTMLElement>;
   @ViewChild('liquidGlassDefs') liquidGlassDefsRef?: ElementRef<SVGDefsElement>;
 
-  scrolled = false;
-  open = false;
-  active = '';
-  private destroy$ = new Subject<void>();
+  private scrollDetection = inject(ScrollDetectionService);
+  private liquidGlass = inject(LiquidGlassService);
+  private zone = inject(NgZone);
+
+  readonly scrolled = signal(false);
+  readonly open = signal(false);
+  readonly active = signal('');
+
   private resizeObserver?: ResizeObserver;
   private resizeDebounce?: ReturnType<typeof setTimeout>;
 
@@ -78,18 +82,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     { label: 'Contact', href: '#contact' },
   ];
 
-  constructor(
-    private scrollDetection: ScrollDetectionService,
-    private liquidGlass: LiquidGlassService,
-    private zone: NgZone
-  ) {}
-
-  ngOnInit() {
+  constructor() {
     this.scrollDetection.scroll$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(scroll => {
-        this.scrolled = scroll.scrollY > 40;
-      });
+      .pipe(takeUntilDestroyed())
+      .subscribe(scroll => this.scrolled.set(scroll.scrollY > 40));
   }
 
   ngAfterViewInit() {
@@ -133,9 +129,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     (navEl.style as any).webkitBackdropFilter = `url(#${LIQUID_GLASS_FILTER_ID})`;
   }
 
+  toggleOpen() {
+    this.open.update(v => !v);
+  }
+
   handleNav(href: string) {
-    this.open = false;
-    this.active = href;
+    this.open.set(false);
+    this.active.set(href);
     const el = document.querySelector(href);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
@@ -147,8 +147,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.resizeObserver?.disconnect();
     clearTimeout(this.resizeDebounce);
   }

@@ -1,10 +1,12 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ViewChild,
   ElementRef,
   AfterViewInit,
   OnDestroy,
   NgZone,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -36,6 +38,7 @@ const floatingBadges = [
   selector: 'app-hero',
   standalone: true,
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="hero" class="relative min-h-screen flex flex-col justify-center overflow-hidden grid-bg">
       <!-- Particle canvas -->
@@ -209,10 +212,9 @@ export class HeroComponent implements AfterViewInit, OnDestroy {
   protected stats = stats;
   protected floatingBadges = floatingBadges;
 
+  private ngZone = inject(NgZone);
   private particles: Particle[] = [];
   private animationId?: number;
-
-  constructor(private ngZone: NgZone) { }
 
   ngAfterViewInit() {
     this.initParticleCanvas();

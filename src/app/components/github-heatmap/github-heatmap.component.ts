@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, fromEvent, of } from 'rxjs';
 import {
@@ -418,7 +418,7 @@ export class GitHubHeatmapComponent {
     })
   );
 
-  constructor(private githubStats: GithubStatsService) {}
+  private githubStats = inject(GithubStatsService);
 
   retry(): void {
     this.refresh$.next();

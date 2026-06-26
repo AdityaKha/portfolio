@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   trigger,
@@ -51,6 +51,7 @@ const experiences = [
   selector: 'app-experience',
   standalone: true,
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="experience" class="section-padding">
       <div class="max-w-4xl mx-auto px-6">

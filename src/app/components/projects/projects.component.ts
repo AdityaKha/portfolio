@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 const projects = [
@@ -69,6 +69,7 @@ const projects = [
   selector: 'app-projects',
   standalone: true,
   imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="projects" class="section-padding relative overflow-hidden">
       <div class="max-w-5xl mx-auto px-6">

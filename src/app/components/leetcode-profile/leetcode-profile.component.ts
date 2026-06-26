@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Observable, combineLatest, forkJoin, fromEvent, of } from 'rxjs';
 import {
@@ -432,7 +432,7 @@ export class LeetcodeProfileComponent {
     })
   );
 
-  constructor(private leetcodeStats: LeetcodeStatsService) {}
+  private leetcodeStats = inject(LeetcodeStatsService);
 
   retry(): void {
     this.refresh$.next();

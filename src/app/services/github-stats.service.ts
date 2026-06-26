@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -55,7 +55,7 @@ const CONTRIBUTIONS_API_BASE = 'https://github-contributions-api.jogruber.de/v4'
 
 @Injectable({ providedIn: 'root' })
 export class GithubStatsService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getProfile(username: string): Observable<GithubProfile> {
     return this.http.get<RawGithubProfile>(`${API_BASE}/users/${username}`).pipe(
