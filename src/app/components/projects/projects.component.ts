@@ -24,31 +24,12 @@ const projects = [
     ],
   },
   {
-    id: 'mean',
-    title: 'MEAN Stack Application',
-    subtitle: 'Full-Stack Web Application',
-    company: 'Personal Project',
-    category: 'Full-Stack',
-    stack: ['MongoDB', 'Express.js', 'Angular', 'Node.js', 'JWT', 'TypeScript'],
-    overview:
-      'A complete CRUD web application demonstrating full-stack proficiency across the MongoDB, Express, Angular, and Node.js stack — with production-grade authentication and clean architecture.',
-    problem:
-      'A practical demonstration of end-to-end full-stack ownership, from database modelling through API design to interactive frontend — without relying on frameworks that abstract away the complexity.',
-    solution:
-      'Built a modular folder structure separating concerns cleanly: feature modules in Angular, service-layer Node.js routes, and JWT-protected endpoints with refresh token flow.',
-    impact: [
-      '🔑 JWT authentication with secure login, registration, and session management',
-      '📦 Modular Angular architecture with lazy-loaded feature modules',
-      '🗃️ MongoDB schemas with proper indexing and relationship design',
-      '🧪 Clean API contract between frontend and backend teams',
-    ],
-  },
-  {
     id: 'attendance',
     title: 'Attendance Management System',
     subtitle: 'Desktop Application',
     company: 'Academic Project',
     category: 'Desktop',
+    logo: "assets/abes_Logo.png",
     stack: ['Java', 'JSP', 'Servlets', 'Oracle SQL', 'JDBC'],
     overview:
       'A desktop-based student attendance tracking system for academic institutions — built with Java server-side technologies, secure credential management, and automated reporting.',

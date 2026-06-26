@@ -9,7 +9,7 @@ import { ProjectsComponent } from './components/projects/projects.component';
 import { EducationComponent } from './components/education/education.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { GitHubHeatmapComponent } from './components/github-heatmap/github-heatmap.component';
+import { GitHubProfileComponent } from './components/github-profile/github-profile.component';
 import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode-profile.component';
 
 @Component({
@@ -25,7 +25,7 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
     ExperienceComponent,
     ProjectsComponent,
     EducationComponent,
-    GitHubHeatmapComponent,
+    GitHubProfileComponent,
     LeetcodeProfileComponent,
     ContactComponent,
     FooterComponent,
@@ -40,7 +40,7 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
         <app-leetcode-profile></app-leetcode-profile>
         <app-about></app-about>
         <app-experience></app-experience>
-        <app-github-heatmap></app-github-heatmap>
+        <app-github-profile></app-github-profile>
         <app-projects></app-projects>
         <app-education></app-education>
         <app-contact></app-contact>

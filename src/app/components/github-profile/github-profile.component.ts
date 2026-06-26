@@ -16,18 +16,15 @@ import {
   GithubRepoSummary,
   GithubStatsService,
 } from '../../services/github-stats.service';
-
-interface HeatmapDay {
-  date: Date;
-  count: number;
-  level: number;
-  isFuture: boolean;
-}
-
-interface HeatmapWeek {
-  label: string | null;
-  days: HeatmapDay[];
-}
+import { HeatmapGridComponent } from '../heatmap-grid/heatmap-grid.component';
+import {
+  DAY_MS,
+  HeatmapDay,
+  HeatmapWeek,
+  MONTH_NAMES,
+  WEEKS_PER_MONTH,
+  monthsForViewportWidth,
+} from '../heatmap-grid/heatmap-grid.types';
 
 interface GithubViewModel {
   profile: GithubProfile;
@@ -55,19 +52,6 @@ type RawState =
   | { status: 'loading' }
   | { status: 'error' }
   | { status: 'success'; data: RawGithubData };
-
-const DAY_MS = 86_400_000;
-const WEEKS_PER_MONTH = 4.345;
-const MONTH_NAMES = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-];
-
-function monthsForViewportWidth(width: number): number {
-  if (width < 640) return 4;
-  if (width < 768) return 6;
-  if (width < 1024) return 9;
-  return 12;
-}
 
 function getLevel(count: number): number {
   if (count === 0) return 0;
@@ -183,13 +167,13 @@ function buildViewModel(
 }
 
 @Component({
-  selector: 'app-github-heatmap',
+  selector: 'app-github-profile',
   standalone: true,
-  imports: [CommonModule, FadeInDirective],
+  imports: [CommonModule, FadeInDirective, HeatmapGridComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="github-stats" class="section-padding">
-      <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6">
         <!-- Header -->
         <div class="mb-12" appFadeIn>
           <div class="flex items-center gap-3 mb-4">
@@ -216,7 +200,7 @@ function buildViewModel(
           <!-- Loading -->
           <div
             *ngIf="state.status === 'loading'"
-            class="glass-strong rounded-2xl p-12 text-center text-text-muted"
+            class="glass-strong rounded-2xl p-8 sm:p-12 text-center text-text-muted"
             appFadeIn
           >
             Fetching live stats from GitHub&hellip;
@@ -225,7 +209,7 @@ function buildViewModel(
           <!-- Error -->
           <div
             *ngIf="state.status === 'error'"
-            class="glass-strong rounded-2xl p-12 text-center"
+            class="glass-strong rounded-2xl p-8 sm:p-12 text-center"
             appFadeIn
           >
             <p class="text-text-secondary mb-4">Couldn't load live GitHub stats right now.</p>
@@ -305,46 +289,7 @@ function buildViewModel(
                   <span>Longest streak: <strong class="text-text-primary">{{ state.vm.longestStreak }}</strong></span>
                 </div>
               </div>
-
-              <div class="flex flex-col gap-2">
-                <div class="flex gap-[2px]">
-                  <div
-                    *ngFor="let week of state.vm.weeks; let i = index"
-                    class="w-[12px] text-[10px] text-text-muted whitespace-nowrap"
-                    [class.ml-2]="i > 0 && week.label"
-                  >
-                    {{ week.label }}
-                  </div>
-                </div>
-                <div class="flex gap-[2px]">
-                  <div
-                    *ngFor="let week of state.vm.weeks; let i = index"
-                    class="flex flex-col gap-[2px]"
-                    [class.ml-2]="i > 0 && week.label"
-                  >
-                    <div
-                      *ngFor="let day of week.days"
-                      class="heatmap-cell !w-3 !h-3"
-                      [class.invisible]="day.isFuture"
-                      [ngClass]="'level-' + day.level"
-                      [title]="getTooltip(day)"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Legend -->
-              <div class="mt-6 flex items-center justify-end gap-3">
-                <span class="text-xs text-text-muted font-semibold">Less</span>
-                <div class="flex gap-1">
-                  <div class="heatmap-legend-cell level-0"></div>
-                  <div class="heatmap-legend-cell level-1"></div>
-                  <div class="heatmap-legend-cell level-2"></div>
-                  <div class="heatmap-legend-cell level-3"></div>
-                  <div class="heatmap-legend-cell level-4"></div>
-                </div>
-                <span class="text-xs text-text-muted font-semibold">More</span>
-              </div>
+              <app-heatmap-grid [weeks]="state.vm.weeks" tooltipLabel="contribution" [scrollable]="true" />
             </div>
 
             <!-- Streaks -->
@@ -373,7 +318,7 @@ function buildViewModel(
     </section>
   `,
 })
-export class GitHubHeatmapComponent {
+export class GitHubProfileComponent {
   readonly username = 'AdityaKha';
   readonly profileUrl = `https://github.com/${this.username}`;
 
@@ -422,15 +367,5 @@ export class GitHubHeatmapComponent {
 
   retry(): void {
     this.refresh$.next();
-  }
-
-  getTooltip(day: HeatmapDay): string {
-    const dateLabel = day.date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      timeZone: 'UTC',
-    });
-    return `${dateLabel}: ${day.count} contribution${day.count === 1 ? '' : 's'}`;
   }
 }
