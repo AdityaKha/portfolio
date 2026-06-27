@@ -39,10 +39,19 @@ interface StatRing {
   arc: RingArc;
 }
 
+interface MobileRingData {
+  label: string;
+  color: string;
+  startAngle: number;
+  dasharray: string;
+  solved: number;
+}
+
 interface LeetcodeViewModel {
   ranking: number;
   totalSolved: number;
   rings: StatRing[];
+  mobileRings: MobileRingData[];
   avatar: string | null;
   badges: LeetcodeBadge[];
   weeks: HeatmapWeek[];
@@ -146,6 +155,24 @@ function buildRingArc(length: number): RingArc {
   return { dasharray: `${length} ${RING_CIRCUMFERENCE}`, dashoffset: 0 };
 }
 
+function buildMobileRings(stats: LeetcodeStats): MobileRingData[] {
+  const RADIUS = 40;
+  const CIRC = 2 * Math.PI * RADIUS;
+  const total = stats.easySolved + stats.mediumSolved + stats.hardSolved;
+  const defs = [
+    { label: 'Easy',   color: '#00b8a3', solved: stats.easySolved },
+    { label: 'Medium', color: '#ffc01e', solved: stats.mediumSolved },
+    { label: 'Hard',   color: '#ef4444', solved: stats.hardSolved },
+  ];
+  let accumulated = 0;
+  return defs.map(({ label, color, solved }) => {
+    const dashLength = total > 0 ? (solved / total) * CIRC : 0;
+    const startAngle = -90 + (accumulated / CIRC) * 360;
+    accumulated += dashLength;
+    return { label, color, startAngle, dasharray: `${dashLength} ${CIRC}`, solved };
+  });
+}
+
 function buildRings(stats: LeetcodeStats): StatRing[] {
   return [
     { label: 'Total', color: '#3b3b43', solved: stats.totalSolved, total: stats.totalQuestions },
@@ -174,6 +201,7 @@ function buildViewModel(
     ranking: stats.ranking,
     totalSolved: stats.totalSolved,
     rings: buildRings(stats),
+    mobileRings: buildMobileRings(stats),
     avatar: profile.avatar,
     badges,
     weeks,
@@ -199,16 +227,6 @@ function buildViewModel(
             </svg>
             <h2 class="text-4xl md:text-5xl font-bold text-text-primary">LeetCode Profile</h2>
           </div>
-          <p class="text-text-secondary">
-            Live stats from
-            <a
-              [href]="profileUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="font-medium text-accent-blue hover:underline"
-              >&#64;{{ username }}</a
-            >
-          </p>
         </div>
 
         <ng-container *ngIf="state$ | async as state">
@@ -240,36 +258,95 @@ function buildViewModel(
           <ng-container *ngIf="state.status === 'success'">
             <div class="grid md:grid-cols-[280px_1fr] gap-6 mb-6">
               <!-- Profile card -->
-              <div
-                class="glass-strong rounded-2xl p-6 flex flex-col items-center text-center"
-                appFadeIn
-              >
-                <img
-                  *ngIf="state.vm.avatar; else avatarFallback"
-                  [src]="state.vm.avatar"
-                  alt="{{ username }} avatar"
-                  class="w-20 h-20 rounded-full object-cover mb-4 border border-white/10"
-                />
-                <ng-template #avatarFallback>
+              <div class="glass-strong rounded-2xl p-6" appFadeIn>
+
+                <!-- MOBILE: horizontal row — avatar | name/rank | concentric rings -->
+                <div class="flex md:hidden items-center gap-3 mb-3">
+                  <img
+                    *ngIf="state.vm.avatar"
+                    [src]="state.vm.avatar"
+                    alt="{{ username }} avatar"
+                    class="w-14 h-14 rounded-full object-cover flex-shrink-0 border border-white/10"
+                  />
                   <div
+                    *ngIf="!state.vm.avatar"
+                    class="w-14 h-14 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-xl font-bold text-white flex-shrink-0"
+                  >
+                    {{ initials }}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="text-base font-semibold text-text-primary leading-tight">@{{ username }}</div>
+                    <div class="text-xs text-text-muted mt-0.5">Rank {{ state.vm.ranking | number }}</div>
+                  </div>
+                  <!-- Single ring split into Easy / Medium / Hard segments -->
+                  <div class="flex-shrink-0">
+                    <svg width="90" height="90" viewBox="0 0 110 110">
+                      <!-- Track -->
+                      <circle cx="55" cy="55" r="40" fill="none" stroke="#1e1e1e" stroke-width="8"/>
+                      <!-- Coloured arc segments, each rotated to its start position -->
+                      <circle
+                        *ngFor="let mr of state.vm.mobileRings"
+                        cx="55" cy="55" r="40" fill="none"
+                        [attr.stroke]="mr.color"
+                        stroke-width="8"
+                        stroke-linecap="butt"
+                        [attr.transform]="'rotate(' + mr.startAngle + ' 55 55)'"
+                        [attr.stroke-dasharray]="mr.dasharray"
+                        stroke-dashoffset="0"
+                      />
+                      <text x="55" y="60" text-anchor="middle" fill="#e4e4e7" style="font-size: 18px; font-weight: 700;">{{ state.vm.totalSolved }}</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- MOBILE: difficulty legend -->
+                <div class="flex md:hidden items-center justify-center gap-4 text-xs mb-3">
+                  <span *ngFor="let mr of state.vm.mobileRings" class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full inline-block" [style.background-color]="mr.color"></span>
+                    <span class="text-text-secondary">{{ mr.solved }} {{ mr.label }}</span>
+                  </span>
+                </div>
+
+                <!-- MOBILE: badges -->
+                <div *ngIf="state.vm.badges.length" class="flex md:hidden flex-wrap items-center justify-center gap-2 mb-3">
+                  <img
+                    *ngFor="let badge of state.vm.badges"
+                    [src]="badge.icon"
+                    [alt]="badge.displayName"
+                    [title]="badge.displayName"
+                    class="w-8 h-8 object-contain"
+                  />
+                </div>
+
+                <!-- DESKTOP: centered column (unchanged) -->
+                <div class="hidden md:flex flex-col items-center text-center">
+                  <img
+                    *ngIf="state.vm.avatar"
+                    [src]="state.vm.avatar"
+                    alt="{{ username }} avatar"
+                    class="w-20 h-20 rounded-full object-cover mb-4 border border-white/10"
+                  />
+                  <div
+                    *ngIf="!state.vm.avatar"
                     class="w-20 h-20 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-2xl font-bold text-white mb-4"
                   >
                     {{ initials }}
                   </div>
-                </ng-template>
-                <div class="text-lg font-semibold text-text-primary">{{ username }}</div>
-                <div class="text-sm text-text-muted mb-4">Rank {{ state.vm.ranking | number }}</div>
+                  <div class="text-lg font-semibold text-text-primary">{{ username }}</div>
+                  <div class="text-sm text-text-muted mb-4">Rank {{ state.vm.ranking | number }}</div>
+                </div>
+
                 <a
                   [href]="profileUrl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="btn-outline text-sm w-full text-center"
+                  class="btn-outline text-sm w-full text-center block"
                   >View on LeetCode</a
                 >
               </div>
 
-              <!-- Difficulty rings -->
-              <div class="glass-strong rounded-2xl p-6" appFadeIn>
+              <!-- Difficulty rings — desktop only -->
+              <div class="hidden md:block glass-strong rounded-2xl p-6" appFadeIn>
                 <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
                   <div class="text-sm text-text-muted">
                     <span class="text-text-primary font-semibold">{{ state.vm.totalSolved }}</span>

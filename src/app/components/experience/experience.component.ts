@@ -9,7 +9,7 @@ import {
 
 const experiences = [
   {
-    role: 'Full-Stack Developer',
+    role: 'Software Engineer',
     company: 'Exsete Consulting Pvt. Ltd.',
     logo: 'assets/exsete-logo.png',
     logoBg: 'black',
@@ -161,7 +161,7 @@ const experiences = [
 })
 export class ExperienceComponent {
   protected experiences = experiences;
-  expandedIndex = 0;
+  expandedIndex = -1;
 
   toggleExpanded(index: number) {
     this.expandedIndex = this.expandedIndex === index ? -1 : index;
