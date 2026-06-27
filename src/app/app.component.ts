@@ -11,6 +11,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { GitHubProfileComponent } from './components/github-profile/github-profile.component';
 import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode-profile.component';
+import { ResumeComponent } from './components/resume/resume.component';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
     EducationComponent,
     GitHubProfileComponent,
     LeetcodeProfileComponent,
+    ResumeComponent,
     ContactComponent,
     FooterComponent,
   ],
@@ -43,6 +45,7 @@ import { LeetcodeProfileComponent } from './components/leetcode-profile/leetcode
         <app-github-profile></app-github-profile>
         <app-projects></app-projects>
         <app-education></app-education>
+        <app-resume></app-resume>
         <app-contact></app-contact>
       </main>
       <app-footer></app-footer>

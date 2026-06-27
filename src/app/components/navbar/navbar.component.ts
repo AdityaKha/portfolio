@@ -79,6 +79,7 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
     { label: 'GitHub', href: '#github-stats' },
     { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },
+    { label: 'Resume', href: '#resume' },
     { label: 'Contact', href: '#contact' },
   ];
 
