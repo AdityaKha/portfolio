@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(if \\(-not $?\\) { \"no skills dir\" })",
+      "PowerShell(netstat -ano)",
+      "PowerShell(node -e \"require\\('playwright'\\)\" 2>&1)",
+      "PowerShell(if \\($?\\) { \"playwright available\" } else { \"playwright not available\" })",
+      "PowerShell(npm install -g playwright @playwright/test 2>&1)",
+      "PowerShell(tail -5)",
+      "PowerShell(node \"C:\\\\Users\\\\khand\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--Code-Angular-Aditya-portfolio\\\\c5dcd150-001e-4d7e-bd79-455f6dace3f1\\\\scratchpad\\\\test-resume.js\" 2>&1)"
+    ]
+  }
+}
