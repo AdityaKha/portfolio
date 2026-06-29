@@ -7,12 +7,15 @@ import { GlobalWorkerOptions } from 'pdfjs-dist';
   standalone: true,
   imports: [PdfViewerModule],
   template: `
-    <pdf-viewer
-      [src]="src()"
-      [render-text]="false"
-      [original-size]="false"
-      style="display: block; width: 100%; height: min(80vh, 1050px);"
-    />
+    <div class="h-[52vh] sm:h-[85vh] overflow-hidden">
+      <pdf-viewer
+        [src]="src()"
+        [render-text]="false"
+        [original-size]="false"
+        [zoom-scale]="'page-fit'"
+        style="display: block; width: 100%; height: 100%;"
+      />
+    </div>
   `,
 })
 export class PdfViewerWrapperComponent implements OnInit {

@@ -24,9 +24,9 @@ const stats = [
 ];
 
 const floatingBadges = [
-  { label: 'Java 17+', delay: 0 },
-  { label: 'HLD', delay: 2.4 },
-  { label: 'Angular', delay: 0.8 },
+  { label: 'Java', delay: 0 },
+  { label: 'Angular', delay: 2.4 },
+  { label: 'HLD', delay: 0.8 },
   { label: 'Kafka', delay: 1.2 },
   { label: 'DSA', delay: 2.8 },
   { label: 'PostgreSQL', delay: 1.6 },

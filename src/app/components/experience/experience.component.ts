@@ -9,14 +9,31 @@ import {
 
 const experiences = [
   {
+    role: 'Senior Software Engineer',
+    company: 'CallHealth Services Pvt. Ltd.',
+    logo: 'assets/callHealth_logo.png',
+    logoBg: 'black',
+    period: 'Apr 2026 – Present',
+    location: 'Hyderabad, India',
+    type: 'Full-time',
+    tag: 'Current',
+    highlights: [
+      'Building healthcare platforms from scratch for internal operations and patient-facing use cases',
+      'Delivered Central-Desk end-to-end in under 2 months, now live in production',
+      'Working across full stack using Angular 20, Java 21, Spring Boot, and MySQL',
+      'Contributing to the architecture and development of 3 healthcare platforms',
+    ],
+    stack: ['Angular 20', 'Java 21', 'Spring Boot', 'MySQL'],
+  },
+  {
     role: 'Software Engineer',
     company: 'Exsete Consulting Pvt. Ltd.',
     logo: 'assets/exsete-logo.png',
     logoBg: 'black',
-    period: 'Apr 2023 – Present',
+    period: 'Apr 2023 – Apr 2026',
     location: 'Gurugram, India',
     type: 'Full-time',
-    tag: 'Current',
+    tag: 'Previous',
     highlights: [
       'Built scalable full-stack features for internal Google applications used by 10,000+ daily active users',
       'Enhanced REST APIs using Spring Boot with clean layered architecture (Controller → Service → Repository)',
@@ -31,10 +48,10 @@ const experiences = [
   {
     role: 'Associate Software Engineer',
     company: 'DXC Technology',
-    logo: 'assets/dxc-technology-logo.jpg',
-    logoBg: 'white',
+    logo: 'assets/dxc-technology-logo.png',
+    logoBg: 'black',
     period: 'Jun 2022 – Mar 2023',
-    location: 'India',
+    location: 'Remote',
     type: 'Full-time',
     tag: 'Previous',
     highlights: [

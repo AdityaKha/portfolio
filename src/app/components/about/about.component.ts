@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FadeInDirective } from '../../directives/fade-in.directive';
 
 const timeline = [
@@ -7,13 +6,13 @@ const timeline = [
   { year: '2022', event: 'Graduated with CGPA 8.17 — began career at DXC Technology' },
   { year: '2023', event: 'Joined Exsete Consulting, building tools for 10,000+ Google users' },
   { year: '2024', event: 'Led full-stack compliance platform with Kafka event-driven architecture' },
-  { year: '2026', event: 'Continuing to architect scalable systems and mentor engineers' },
+  { year: '2026', event: 'Joined CallHealth Services as Senior Software Engineer — building healthcare platforms from scratch, delivering Central-Desk to production in under 2 months' },
 ];
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule, FadeInDirective],
+  imports: [FadeInDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="about" class="section-padding">
@@ -29,14 +28,19 @@ const timeline = [
 
         <!-- Career timeline -->
         <div class="relative max-w-2xl mx-auto" appFadeIn>
-          <div class="absolute left-[5px] top-0 bottom-0 w-0.5 timeline-line opacity-30"></div>
-          <div *ngFor="let item of timeline; let i = index" class="relative flex items-start gap-4 pb-8 last:pb-0">
-            <div class="relative z-10 mt-1 w-3 h-3 rounded-full bg-accent-blue border-2 border-bg-primary shadow-[0_0_8px_rgba(79,142,247,0.6)] flex-shrink-0"></div>
-            <div class="glass rounded-xl px-4 py-3 border border-white/5 hover:border-accent-blue/20 transition-colors flex-1">
-              <span class="section-label text-accent-blue text-[11px]">{{ item.year }}</span>
-              <p class="text-text-secondary text-sm mt-1 leading-snug">{{ item.event }}</p>
+          @for (item of timeline; track item.year; let last = $last) {
+            <div class="relative flex items-start gap-4 pb-8 last:pb-0">
+              <!-- Line from this dot's center down to the next dot's center; hidden on last item -->
+              @if (!last) {
+                <div class="absolute left-[5px] top-[10px] -bottom-2.5 w-0.5 timeline-line opacity-30"></div>
+              }
+              <div class="relative z-10 mt-1 w-3 h-3 rounded-full bg-accent-blue border-2 border-bg-primary shadow-[0_0_8px_rgba(79,142,247,0.6)] flex-shrink-0"></div>
+              <div class="glass rounded-xl px-4 py-3 border border-white/5 hover:border-accent-blue/20 transition-colors flex-1">
+                <span class="section-label text-accent-blue text-[11px]">{{ item.year }}</span>
+                <p class="text-text-secondary text-sm mt-1 leading-snug">{{ item.event }}</p>
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     </section>

@@ -38,19 +38,19 @@ import { ResumeComponent } from './components/resume/resume.component';
       <app-scroll-progress></app-scroll-progress>
       <app-navbar></app-navbar>
       <main>
-        <app-hero></app-hero>
-        <app-leetcode-profile></app-leetcode-profile>
-        <app-about></app-about>
-        <app-experience></app-experience>
-        <app-github-profile></app-github-profile>
-        <app-projects></app-projects>
-        <app-education></app-education>
-        <app-resume></app-resume>
-        <app-contact></app-contact>
+      <app-hero></app-hero>
+      <app-about></app-about>
+      <app-experience></app-experience>
+      <app-projects></app-projects>
+      <app-github-profile></app-github-profile>
+      <app-leetcode-profile></app-leetcode-profile>
+      <app-education></app-education>
+      <app-resume></app-resume>
+      <app-contact></app-contact>
       </main>
       <app-footer></app-footer>
     </div>
   `,
   styles: [],
 })
-export class AppComponent {}
+export class AppComponent { }
