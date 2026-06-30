@@ -17,3 +17,10 @@
   -webkit-backdrop-filter: blur(12px) saturate(140%);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
+
+.mobile-menu-glass {
+  background-color: rgba(10, 10, 10, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}

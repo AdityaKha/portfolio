@@ -22,6 +22,7 @@ import { LiquidGlassService } from '../../services/liquid-glass.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 const LIQUID_GLASS_FILTER_ID = 'liquid-glass-distortion';
+const MOBILE_LIQUID_GLASS_FILTER_ID = 'mobile-liquid-glass-distortion';
 
 @Component({
   selector: 'app-navbar',
@@ -60,6 +61,8 @@ const LIQUID_GLASS_FILTER_ID = 'liquid-glass-distortion';
 export class NavbarComponent implements AfterViewInit, OnDestroy {
   @ViewChild('navGlass') navGlassRef?: ElementRef<HTMLElement>;
   @ViewChild('liquidGlassDefs') liquidGlassDefsRef?: ElementRef<SVGDefsElement>;
+  @ViewChild('mobileMenuGlass') mobileMenuGlassRef?: ElementRef<HTMLElement>;
+  @ViewChild('mobileGlassDefs') mobileGlassDefsRef?: ElementRef<SVGDefsElement>;
 
   private scrollDetection = inject(ScrollDetectionService);
   private liquidGlass = inject(LiquidGlassService);
@@ -132,6 +135,27 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
 
   toggleOpen() {
     this.open.update(v => !v);
+    if (this.open() && this.isLiquidGlassSupported()) {
+      this.zone.runOutsideAngular(() => {
+        requestAnimationFrame(() => this.updateMobileMenuGlassFilter());
+      });
+    }
+  }
+
+  private updateMobileMenuGlassFilter() {
+    const el = this.mobileMenuGlassRef?.nativeElement;
+    const defs = this.mobileGlassDefsRef?.nativeElement;
+    if (!el || !defs) return;
+
+    const { width, height } = el.getBoundingClientRect();
+    if (width === 0 || height === 0) {
+      requestAnimationFrame(() => this.updateMobileMenuGlassFilter());
+      return;
+    }
+
+    this.liquidGlass.buildFilter(defs, MOBILE_LIQUID_GLASS_FILTER_ID, width, height);
+    el.style.backdropFilter = `url(#${MOBILE_LIQUID_GLASS_FILTER_ID})`;
+    (el.style as any).webkitBackdropFilter = `url(#${MOBILE_LIQUID_GLASS_FILTER_ID})`;
   }
 
   handleNav(href: string) {

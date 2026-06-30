@@ -2,6 +2,10 @@
   <defs #liquidGlassDefs></defs>
 </svg>
 
+<svg class="liquid-glass-svg" aria-hidden="true" focusable="false">
+  <defs #mobileGlassDefs></defs>
+</svg>
+
 <nav
   [@navEnter]
   [ngClass]="{ 'py-3': scrolled(), 'py-5': !scrolled() }"
@@ -68,7 +72,8 @@
 <div
   *ngIf="open()"
   [@mobileMenuAnimation]
-  class="fixed inset-x-0 top-20 z-40 mx-4 glass rounded-2xl p-4 md:hidden shadow-2xl"
+  #mobileMenuGlass
+  class="fixed inset-x-0 top-20 z-40 mx-4 mobile-menu-glass rounded-2xl p-4 md:hidden shadow-2xl"
 >
   <ul class="flex flex-col gap-1">
     <li *ngFor="let link of links">
