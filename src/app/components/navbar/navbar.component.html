@@ -6,57 +6,38 @@
   <defs #mobileGlassDefs></defs>
 </svg>
 
-<nav
-  [@navEnter]
-  [ngClass]="{ 'py-3': scrolled(), 'py-5': !scrolled() }"
-  class="fixed top-0 inset-x-0 z-50 transition-all duration-300"
->
-  <div
-    #navGlass
-    [ngClass]="{
+<nav [@navEnter] [ngClass]="{ 'py-3': scrolled(), 'py-5': !scrolled() }"
+  class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
+  <div #navGlass [ngClass]="{
       'py-3 shadow-lg': scrolled(),
       'py-0': !scrolled(),
     }"
-    class="navbar-glass mx-auto max-w-6xl px-6 flex items-center justify-between rounded-2xl transition-all duration-300"
-  >
-    <button
-      (click)="scrollToTop()"
-      class="flex items-center gap-2 group"
-    >
-      <img
-        src="assets/app_logo.jpeg"
-        alt="Aditya Khandelwal logo"
-        class="w-8 h-8 rounded-lg object-cover select-none"
-      />
+    class="navbar-glass mx-auto max-w-6xl px-6 flex items-center justify-between rounded-2xl transition-all duration-300">
+    <button (click)="scrollToTop()" class="flex items-center gap-2 group">
+      <img src="assets/app_logo.jpeg" alt="Aditya Khandelwal logo"
+        class="w-8 h-8 rounded-lg object-cover select-none" />
       <span
-        class="text-text-primary font-semibold text-sm hidden sm:block group-hover:text-accent-blue transition-colors"
-      >
+        class="text-text-primary font-semibold text-sm hidden sm:block group-hover:text-accent-blue transition-colors">
         Aditya Khandelwal
       </span>
     </button>
 
     <ul class="hidden md:flex items-center gap-1">
       <li *ngFor="let link of links">
-        <button
-          (click)="handleNav(link.href)"
-          [ngClass]="{
+        <button (click)="handleNav(link.href)" [ngClass]="{
             'text-accent-blue bg-accent-blue/10': active() === link.href,
             'text-text-secondary hover:text-text-primary hover:bg-white/5':
               active() !== link.href,
-          }"
-          class="px-3 py-1.5 text-sm rounded-lg transition-all duration-200 font-medium"
-        >
+          }" class="px-3 py-1.5 text-sm rounded-lg transition-all duration-200 font-medium">
           {{ link.label }}
         </button>
       </li>
     </ul>
 
-    <button
-      class="md:hidden text-text-secondary hover:text-text-primary transition-colors p-2"
-      (click)="toggleOpen()"
-      [attr.aria-label]="open() ? 'Close menu' : 'Open menu'"
-    >
-      <svg *ngIf="!open()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button class="md:hidden text-text-secondary hover:text-text-primary transition-colors p-2" (click)="toggleOpen()"
+      [attr.aria-label]="open() ? 'Close menu' : 'Open menu'">
+      <svg *ngIf="!open()" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2">
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <line x1="3" y1="12" x2="21" y2="12"></line>
         <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -69,19 +50,15 @@
   </div>
 </nav>
 
-<div
-  *ngIf="open()"
-  [@mobileMenuAnimation]
-  #mobileMenuGlass
-  class="fixed inset-x-0 top-20 z-40 mx-4 mobile-menu-glass rounded-2xl p-4 md:hidden shadow-2xl"
->
+<div *ngIf="open()" [@mobileMenuAnimation] #mobileMenuGlass
+  class="fixed inset-x-0 top-20 z-40 mx-4 mobile-menu-glass rounded-2xl p-4 md:hidden shadow-2xl">
   <ul class="flex flex-col gap-1">
     <li *ngFor="let link of links">
-      <button
-        (click)="handleNav(link.href)"
-        class="w-full text-left px-4 py-3 text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 rounded-xl transition-all font-medium"
-      >
-        {{ link.label }}
+      <button (click)="handleNav(link.href)"
+        class="w-full text-left px-4 py-3 text-sm text-text-secondary hover:text-text-primary hover:bg-white/5 rounded-xl transition-all font-medium">
+        <div class="bg-neutral-800 rounded-lg px-3 py-1 inline-block">
+          {{ link.label }}
+        </div>
       </button>
     </li>
   </ul>
